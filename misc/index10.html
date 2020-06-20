@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Tool for getIF@L</title>
+<script>
+
+//initialize variables
+var textarea=" "; 
+var counter=1;
+var addedurl=" ";
+var addedhtml=" ";
+var errormsg=" ";
+var caption;
+var picturl;
+var formData;
+var owner_id;
+var header_text1="#プレゼントキャンペーン 応募は、@"
+var header_text2=" さんをフォロー＆いいねするだけ! \n⁠ *-*-*-*-*-*-*-*-*-*-*-*⁠\nPresent Campaign⁠\n*-*-*-*-*-*-*-*-*-*-*-*⁠ *\n*\n*";
+var footer_text=" #プレゼント企画 #インスタキャンペーン #キャンペーン #プレキャン #インスタグラムキャンペーン #キャンペーン企画 #キャンペーン情報 #キャンペーン実施中 #懸賞";
+
+
+
+function sethtml(url){
+    // Fetch APIの実行
+    fetch(url)
+	.then((response) => {
+	    if(response.ok) { // ステータスがokならば
+		var prodata=response.text(); // レスポンスをテキストとして変換する
+		data=prodata.text
+		json_string = data.split("window._sharedData =")[1];                                            
+		json = json_string.split("}\;\</script\>")[0] + "}";                                       
+		//jsonデータを解析     
+		adata = JSON.parse(json); 
+		//instajsonは解析可能だがエラーの出るものがあるようなので有効なデータの取得可否でエラーを捕捉する
+		try{
+		    //キャプションを抜き出す
+		    caption  = adata.entry_data.PostPage[0].graphql.shortcode_media.edge_media_to_caption.edges[0].node.text;
+		    //対象の画像のURLを抜きだす                                              
+		    picturl = adata.entry_data.PostPage[0].graphql.shortcode_media.display_url;            
+                    owner_id=adata.entry_data.PostPage[0].graphql.shortcode_media.owner.username;
+
+		}catch(err){
+		    //目的のデータが取得できない場合エラーメッセージを表示
+		    targeterror = document.getElementById("error");
+		    targeterror.innerHTML = "正常にデータを取得できないURLが含まれていました。「リンクをコピー」したもののみ使えます。";
+		    return;
+		}
+		//textarea部分のHTMLを作成
+		textarea="<textarea cols=\"200\" rows=\"8\">"+header_text1+owner_id+header_text2+caption+footer_text+"</textarea>";
+		link="<a href=\""+url+"\">"+url+"</a><br>";
+		//HTML追加部分を作成
+		addedhtml= addedhtml+"<br>"+counter+".<br>"+"画像URL<br>"+picturl+"<br>"+link+"<img src="+picturl+" width=30% height=30% ><HR>"+textarea+"<HR><br>";	
+		//URLリスト追加部分を作成
+		addedurl=addedurl+counter+". "+url+"<br>";
+		//HTML部分書き換え
+		targethtml = document.getElementById("output");
+		targethtml.innerHTML = addedhtml;
+		targeturl = document.getElementById("urls");
+		targeturl.innerHSTML = addedurl;
+		//画像番号をインクリメント
+		this.caption=caption;
+		counter++;
+		return this;
+	    } else {
+		throw new Error();
+	    }
+	})
+	.then((text) => console.log(text))
+	.catch((error) => console.log(error));
+}
+
+//データ再送信時等に変数をリセットする
+function reset_values(){
+    //送信ボタンを押した時にinputboxに入っているもののみ更新するのでカウンターをリセット
+    counter=1;
+    //上に同じく表記するURL,htmlをリセット
+    addedurl="<br><p>URL list (from which data got successfully)</p>";
+    addedhtml="<hr>";
+    //表示されたエラーメッセージを消去
+    errormsg=" ";
+    targeterror = document.getElementById("error");
+    targeterror.innerHTML = errormsg;
+}
+    
+//送信ボタンを押した場合に書き換える
+function sendPost(){
+    //ページをクリーン
+    reset_values();
+    //フォームデータを再取得1    
+    formData = new FormData(document.forms.user);
+    //フォームのinputboxの内容を解析してHTML合成関数をデータの個数だけ呼び出す データの順番が順不同になるので注意
+    for (item of formData) {
+	res=new sethtml(item[1]);
+	console.log(res);
+    }
+}
+
+</script>
+</head>
+
+<body>
+ 「リンクをコピー」したもののみ表示可能。入力順と表示順が順不同となるため注意。<br>
+  <form name="user">
+    ig pic URL:   <input type="text" name="id1" ><br>
+    ig pic URL:   <input type="text" name="id2" ><br>
+    ig pic URL:   <input type="text" name="id3"><br>
+    ig pic URL:   <input type="text" name="id4"><br>
+    ig pic URL:   <input type="text" name="id5"><br>
+    ig pic URL:   <input type="text" name="id6" ><br>
+    ig pic URL:   <input type="text" name="id7"><br>
+    ig pic URL:   <input type="text" name="id8"><br>
+    ig pic URL:   <input type="text" name="id9"><br>
+    <input type="submit" onclick="sendPost();return false;" value="表示">
+    <input type="submit" onclick="windowObj.refresh();return false;" value="画面リフレッシュ">
+  </form>
+  <div id="error"></div>
+  <div id="urls"></div>
+  <div id="output"></div>
+
+</body>
+
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Tool for getIF@L</title>
+<script>
+
+//initialize variables
+var textarea=" "; 
+var counter=1;
+var addedurl=" ";
+var addedhtml=" ";
+var errormsg=" ";
+var caption;
+var picturl;
+var formData;
+var targeterror = document.getElementById("error");
+var targethtml = document.getElementById("output");
+var targeturl = document.getElementById("urls");
+
+
+//URLを元にインスタからデータを取得し、表示用のHTMLを合成する
+function gethtmls(url){
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET',url);
+    xhr.send();
+    //エラー処理
+    xhr.onload = function(){
+	if(xhr.status!=200){
+	    //200以外の場合はエラーメッセージを表示する
+	    errormsg="正常にデータを取得できないURLが含まれていました.";
+	    targeterror.innerHTML = errormsg;
+	  }
+    };
+
+    xhr.onreadystatechange = function() {                                                                  
+	if(xhr.readyState === 4 && xhr.status === 200) {                                                     
+	    data=xhr.responseText;                                                                           
+	    // jsonだけ抜きだす                                                                              
+	    json_string = data.split("window._sharedData =")[1];                                            
+	    json = json_string.split("}\;\</script\>")[0] + "}";                                       
+	    //jsonデータを解析     
+	    adata = JSON.parse(json); 
+	    //instajsonは解析可能だがエラーの出るものがあるようなので有効なデータの取得可否でエラーを捕捉する
+	    try{
+		//キャプションを抜き出す
+		caption  = adata.entry_data.PostPage[0].graphql.shortcode_media.edge_media_to_caption.edges[0].node.text;
+		//対象の画像のURLを抜きだす                                              
+		picturl = adata.entry_data.PostPage[0].graphql.shortcode_media.display_url;            
+            }catch(err){
+		//目的のデータが取得できない場合エラーメッセージを表示
+		targeterror.innerHTML = "正常にデータを取得できないURLが含まれていました.";;
+		return;
+	    }
+	    //textarea部分のHTMLを作成
+	    textarea="<textarea cols=\"200\" rows=\"8\">"+caption+"</textarea>";
+	    link="<a href=\""+url+"\">"+url+"</a><br>";
+	    //HTML追加部分を作成
+	    addedhtml= addedhtml+"<br>"+counter+".<br>"+link+"<img src="+picturl+" width=30% height=30% ><HR>"+textarea+"<HR><br>";	
+	    //URLリスト追加部分を作成
+	    addedurl=addedurl+counter+". "+url+"<br>";
+	    //画像番号をインクリメント
+	    counter++;
+	    return;
+	}
+    }
+}                     
+
+//データ再送信時等に変数をリセットする
+function reset_values(){
+    //送信ボタンを押した時にinputboxに入っているもののみ更新するのでカウンターをリセット
+    counter=1;
+    //上に同じく表記するURL,htmlをリセット
+    addedurl="<br><p>URL list (from which data got succesfully)</p>";
+    addedhtml="<hr>";
+    //表示されたエラーメッセージを消去
+    targeterror = document.getElementById("error");
+    targeterror.innerHTML = " ";
+
+}
+    
+//送信ボタンを押した場合に書き換える
+function sendPost(){
+    //ページをクリーン
+    reset_values();
+    //フォームデータを再取得    
+    formData = new FormData(document.forms.user);
+    //フォームのinputboxの内容を解析してHTML合成関数をデータの個数だけ呼び出す データの順番が順不同になるので注意
+    for (item of formData) {
+	gethtmls(item[1]);
+	console.log(addedhtml);
+
+    }
+    //HTML部分書き換え
+    targethtml.innerHTML = addedhtml;
+    targeturl.innerHTML = addedurl;
+
+}
+
+</script>
+</head>
+
+<body>
+  <form name="user">
+    ig pic URL1:   <input type="text" name="id1" ><br>
+    ig pic URL2:   <input type="text" name="id2" ><br>
+    ig pic URL3:   <input type="text" name="id3"><br>
+    ig pic URL4:   <input type="text" name="id4"><br>
+    ig pic URL5:   <input type="text" name="id5"><br>
+    <input type="submit" onclick="sendPost();return false;" value="表示">
+    <input type="submit" onclick="windowObj.refresh();return false;" value="画面リフレッシュ">
+  </form>
+  <div id="error"></div>
+  <div id="urls"></div>
+  <div id="output"></div>
+
+</body>
+
+</html>

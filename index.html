@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+<script>
+
+function throwError() {
+    return new Promise((resolve, reject) => {
+        setTimeout(function() {
+            try {
+		//エラーの場合はエラーインスタンスを返す
+		throw new Error('エラーあったよ')
+
+		//resolveが返された時は　resolveをリターンする　文字列。
+                resolve('エラーなかった')
+
+            } catch(err) {
+		//エラーインスタンスが発生した場合rejectが戻る
+                reject(err);
+            }
+        }, 1000);
+    });
+ return;
+}
+
+async function errorHandling() {
+    // throwErrorがrejectを返したら処理が中断される　エラーが起きた時はresultは戻らないらしい
+    const result = await throwError();
+    console.log(result);
+    return result;
+}
+
+errorHandling().catch((err) => {
+    console.log(err); // => エラーあったよ
+});
+
+</script>
+</head>
+
+<body>
+
+</body>
+</html>

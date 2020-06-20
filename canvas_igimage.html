@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>Canvas sample</title>
+  </head>
+  <body>
+      <select id="canvas_base">
+	<option value="yellow.jpg">黄色</option>
+	<option value="purple.png">紫</option>
+      </select>
+      <input type="text" id="canvas_pict" value="https://www.pakutaso.com/shared/img/thumb/texture524_13_TP_V.jpg">
+     <button onclick="draw('canvas_base','canvas_pict');">枠と写真を設定/文字のリセット</button>
+      
+    <p>
+      <input type="text" id="canvas_text" value="10">月
+      <input type="text" id="canvas_text1" value="10">日
+      <select id="canvas_text3">
+	<option value=""></option>
+	<option value="(月)">月</option>
+	<option value="(火)">火</option>
+	<option value="(水)">水</option>
+	<option value="(木)">木</option>
+	<option value="(金)">金</option>
+	<option value="(土)">土</option>
+	<option value="(日)">日</option>
+      </select>
+      <input type="text" id="canvas_text2" value="3">名当選<br>
+      商品名：<input type="text" id="canvas_text4" value="イオン美顔器">
+      文字間隔：<select id="canvas_space1">
+	<option value="0">デフォルト文字間隔</option>
+	<option value="-20">ちょっと狭い</option>
+	<option value="-35">かなり狭い</option>
+      </select>
+      <br>
+      条件：<input type="text" id="canvas_text5" list="jouken" autocomplete="off">
+      <datalist id="jouken" value="フォロー＆いいね">
+	<option value="フォロー＆いいね">
+  　	<option value="フォロー＆いいね＆コメント">
+  　	<option value="南斗水鳥拳">
+      </datalist>
+      <br>説明文<br>
+      <input type="text" id="canvas_text6" value="ーーーーーー">
+      <input type="text" id="canvas_text7" value="ーーーーーー">
+      <input type="text" id="canvas_text8" value="ーーーー">三行に分けて説明を書く
+      <select id="canvas_space2">
+	<option value="0">デフォルト文字間隔</option>
+	<option value="-10">ちょっと狭い</option>
+	<option value="-25">かなり狭い</option>
+     </select>
+<br><br>
+      <button onclick="drawText('sample', 'canvas_text','canvas_text1','canvas_text2','canvas_text3','canvas_text4','canvas_text5','canvas_text6','canvas_text7','canvas_text8','canvas_space1','canvas_space2');">文字を描く</button>
+      <br><br>
+<!--クロスドメイン規約に抵触するらしいので下ボタンはこの環境では使えない。（右クリックで縮小保存はできる）<br>
+      <button onclick="chgImg();">画像に変換して保存する</button>(1000*1000のpngに変換されます)<br>-->
+    </p>
+    <canvas id="sample" width="1080" height="1080pt"></canvas>
+    <div><img crossOrigin="anonymous" id="newImg"></div>
+    <style>
+      #sample{
+      width:2160px;
+      height:2160px;
+      background-color:gray;
+      }
+
+    </style>
+
+ <script type="text/javascript">
+   var pict_base;
+   var pict_url;
+
+   	function draw(base,pict){
+                const canvas = document.getElementById('sample');
+		const ctxbase = canvas.getContext("2d");
+	    	pict_base = document.getElementById(base);
+	    	pict_url = document.getElementById(pict);
+                if (canvas.getContext){
+		    // 画像読み込み
+		    const chara = new Image();
+		    chara.src = pict_base.value;
+		    // 画像読み込み
+		    const chara2 = new Image();
+		    chara2.src = pict_url.value;
+		    //画像のURLを指定
+		    chara2.onload = () => {
+			ctxbase.drawImage(chara2,197,193,width=689.254,height=689.254);
+                    }
+		    chara.onload = () => {
+			ctxbase.drawImage(chara, 0, 0,width=1080,height=1080);
+                    }
+		}
+            }
+
+
+	  //キャンバスに文字を描く
+	  function drawText(canvas_id, text_id0,text_id1,text_id2,text_id3,text_id4,text_id5,text_id6,text_id7,text_id8,text_space1,text_space2){
+	      var canvas = document.getElementById(canvas_id);
+	      var ctx = canvas.getContext('2d');
+	      //get引数など
+	      var text0 = document.getElementById(text_id0);
+	      var text = document.getElementById(text_id1);
+	      var text2 = document.getElementById(text_id2);
+	      var text3 = document.getElementById(text_id3);
+	      var text4 = document.getElementById(text_id4);
+	      var text5 = document.getElementById(text_id5);
+	      var text6 = document.getElementById(text_id6);
+	      var text7 = document.getElementById(text_id7);
+	      var text8 = document.getElementById(text_id8);
+	      var space1 = document.getElementById(text_space1);
+	      var space2 = document.getElementById(text_space2);
+	      //その他分岐
+	      var align1=0;
+	      var align2=0;
+	      var align3=0;
+	      var spacing='0pt';
+	      var condsource;
+
+	      if(pict_base.value=="yellow.jpg"){color="b";}
+	      else {color="p";}
+
+	      if(text5.value=="フォロー＆いいね"){
+		  condsource=color+"FG.png";
+		  cswidth=642;
+		  csheight=70;
+		  cspos=250;
+	      }else if(text5.value=="フォロー＆いいね＆コメント"){
+		  condsource=color+"FGC.png"
+		  cswidth=834;
+		  csheight=70;
+		  cspos=220;
+	      }
+
+	      if (canvas.getContext){
+		    // 画像読み込み
+		    const chara3 = new Image();
+		    chara3.src = condsource;
+		    // 画像読み込み
+		    const chara4 = new Image();
+		    chara4.src = "purple.png";
+		    //画像のURLを指定
+		    chara3.onload = () => {
+			ctx.drawImage(chara3, cspos, 70,cswidth,csheight);
+                    }
+		}
+
+	      //文字のスタイルを指定
+	      ctx.font = '65pt NotoSansCJKjp-Black';
+	      ctx.fillStyle = '#ffffff';
+	      //文字の配置を指定（左上基準にしたければtop/leftだが、文字の中心座標を指定するのでcenter
+	      ctx.textBaseline = 'center';
+	      ctx.textAlign = 'center';
+	      //回転する
+	      ctx.rotate( -45 * Math.PI / 180 ) ;
+	      //斜め線　417pix
+	      var textlen=(ctx.measureText(text.value).width+ctx.measureText('   / ').width+ctx.measureText(text0.value).width+ctx.measureText(text3.value).width);
+   	      sample.style.letterSpacing = '-10pt';
+
+	      //開始位置算出
+	      //月部分の座標を指定して文字を描く（座標は画像の中心に）
+	      if(text0.value<10)align1=20;
+	      ctx.font = '65pt NotoSansCJKjp-Black';
+	      pos=-textlen/2+160-align1;
+	      ctx.fillText(text0.value, pos, 185);
+	      // "/"部分をかく
+	      ctx.font = '35pt NotoSansCJKjp-Black';
+	      pos=pos+ctx.measureText("  /").width*65/35-align1;
+	      console.log(pos)
+	      ctx.fillText(" / ", pos,176);
+	      //日にち部分を指定してかく
+	      ctx.font = '65pt NotoSansCJKjp-Black';
+	      if(text.value<10)align2=20;
+	      pos=pos+ctx.measureText(text.value).width/2+align2;
+	      ctx.fillText(text.value, pos, 185);
+	      //曜日部分
+      	      if(text.value<10)align3=10;
+	      sample.style.letterSpacing = '-20pt';
+	      ctx.font = '33px NotoSansCJKjp-Black';
+	      pos=textlen/2-150+align2*1.1+align1;
+	      console.log(pos)
+	      ctx.fillText(text3.value,pos, 179);
+	      //回転する
+	      ctx.rotate( 45 * Math.PI / 180 ) ;
+	      ctx.font = '95pt NotoSansCJKjp-Black';
+	      //当選人数を描く（座標は画像の中心に）
+	      if(text2.value>=10) {
+		  ctx.font = '70pt NotoSansCJKjp-Black';
+		  sample.style.letterSpacing = '-60pt';
+  		  ctx.fillText(text2.value, 950, 790);
+	      }else{
+	      ctx.fillText(text2.value, 965, 790);
+	      }
+	      //商品名
+	      sample.style.letterSpacing = space1.value+'pt';
+	      	      console.log(sample.style.letterSpacing)
+
+	      ctx.font = '88.82pt NotoSansCJKjp-Light';
+	      if(pict_base.value=="yellow.jpg"){
+		//黄色い額縁の時
+		  ctx.fillStyle ="#4f4637";
+	      }else if (pict_base.value=="purple.png"){
+		  ctx.fillStyle ="#500993";
+		 }
+	      ctx.fillText(text4.value,canvas.width/2, canvas.height*18/19);
+	      //回転する
+	      ctx.rotate( -30 * Math.PI / 180 ) ;
+	      ctx.textAlign = 'center';
+	      sample.style.letterSpacing = space2.value+'px';
+	      console.log(sample.style.letterSpacing)
+	      ctx.font = '27pt mplus-2p-bold';
+	      ctx.fillText(text6.value,-canvas.width*1.4/5, canvas.height*11/17);
+	      ctx.fillText(text7.value,-canvas.width*1.4/5, canvas.height*11/17+41);
+	      ctx.fillText(text8.value,-canvas.width*1.4/5, canvas.height*11/17+82);
+	      ctx.rotate( 30 * Math.PI / 180 ) ;
+	      sample.style.letterSpacing = '0pt';
+	  }
+
+   	//canvasデータを画像に変換にする関数
+   	function chgImg(){
+	    var png = sample.toDataURL("image/jpg",1);
+	    document.getElementById("newImg").src = png;
+	}
+        
+ 	
+ 	</script>
+ 	<style type="text/css">
+        #sample {
+            background: #fff;
+        }
+	</style>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+<HTML>
+<HEAD></HEAD>
+
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js">    
+alert(unescapeUnicode("S\\u0026MはRihannaの曲です。"));
+
+function unescapeUnicode(string) {
+    return string.replace(/\\u([a-fA-F0-9]{4})/g, function(matchedString, group1) {
+        return String.fromCharCode(parseInt(group1, 16));
+    });
+}
+
+$(function () {
+    try {
+        this.name = "B-rxIJ3AKsQ";
+        $.ajax('https://www.instagram.com/' + this.name + '/', {
+            timeout: 2000,
+            datatype: 'html'
+        }).then(function (data) {
+            json_string = data.split("window._sharedData = ")[1];
+            json_string = json_string.split("};</script>")[0] + "}";
+            this.Arrya_data = JSON.parse(json_string);
+            let datas = this.Arrya_data.entry_data.ProfilePage[0].graphql.user.edge_owner_to_timeline_media.edges;
+            for (i in datas) {
+                url = datas[i].node.display_url;
+                console.log(url);
+            }
+        });
+    } catch (error) {
+        alert(error);
+    }
+})
+</SCRIPT>
+</BODY>
+</HEAD>
