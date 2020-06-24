@@ -5,6 +5,8 @@
     <title>Canvas sample</title>
   </head>
   <body>
+
+    <div id="form__COUNT___">
       <select id="canvas_base">
 	<option value="yellow.jpg">黄色</option>
 	<option value="purple.png">紫</option>
@@ -31,7 +33,6 @@
 	<option value="0">デフォルト文字間隔</option>
 	<option value="-20">ちょっと狭い</option>
 	<option value="-35">かなり狭い</option>
-	<option value="-50">相当狭い</option>
       </select>
       <br>
       条件：<input type="text" id="canvas_text5" list="jouken" autocomplete="off">
@@ -65,13 +66,139 @@
       }
 
     </style>
+   </div>
+
+    <div id="form__COUNT___">
+      <select id="canvas_base">
+	<option value="yellow.jpg">黄色</option>
+	<option value="purple.png">紫</option>
+      </select>
+      <input type="text" id="canvas_pict" value="https://www.pakutaso.com/shared/img/thumb/texture524_13_TP_V.jpg">
+     <button onclick="draw('canvas_base','canvas_pict','sample2');">枠と写真を設定/文字のリセット</button>
+      
+    <p>
+      <input type="text" id="canvas_text" value="10">月
+      <input type="text" id="canvas_text1" value="10">日
+      <select id="canvas_text3">
+	<option value=""></option>
+	<option value="(月)">月</option>
+	<option value="(火)">火</option>
+	<option value="(水)">水</option>
+	<option value="(木)">木</option>
+	<option value="(金)">金</option>
+	<option value="(土)">土</option>
+	<option value="(日)">日</option>
+      </select>
+      <input type="text" id="canvas_text2" value="3">名当選<br>
+      商品名：<input type="text" id="canvas_text4" value="イオン美顔器">
+      文字間隔：<select id="canvas_space1">
+	<option value="0">デフォルト文字間隔</option>
+	<option value="-20">ちょっと狭い</option>
+	<option value="-35">かなり狭い</option>
+      </select>
+      <br>
+      条件：<input type="text" id="canvas_text5" list="jouken" autocomplete="off">
+      <datalist id="jouken" value="フォロー＆いいね">
+	<option value="フォロー＆いいね">
+  　	<option value="フォロー＆いいね＆コメント">
+  　	<option value="南斗水鳥拳">
+      </datalist>
+      <br>説明文<br>
+      <input type="text" id="canvas_text6" value="ーーーーーー">
+      <input type="text" id="canvas_text7" value="ーーーーーー">
+      <input type="text" id="canvas_text8" value="ーーーー">三行に分けて説明を書く
+      <select id="canvas_space2">
+	<option value="0">デフォルト文字間隔</option>
+	<option value="-10">ちょっと狭い</option>
+	<option value="-25">かなり狭い</option>
+     </select>
+<br><br>
+      <button onclick="drawText('sample', 'canvas_text','canvas_text1','canvas_text2','canvas_text3','canvas_text4','canvas_text5','canvas_text6','canvas_text7','canvas_text8','canvas_space1','canvas_space2');">文字を描く</button>
+      <br><br>
+<!--クロスドメイン規約に抵触するらしいので下ボタンはこの環境では使えない。（右クリックで縮小保存はできる）<br>
+      <button onclick="chgImg();">画像に変換して保存する</button>(1000*1000のpngに変換されます)<br>-->
+    </p>
+    <canvas id="sample2" width="1080" height="1080pt"></canvas>
+    <div><img crossOrigin="anonymous" id="newImg"></div>
+    <style>
+      #sample{
+      width:2160px;
+      height:2160px;
+      background-color:gray;
+      }
+
+    </style>
+   </div>
+
+    <div id="form__COUNT___">
+      <select id="canvas_base">
+	<option value="yellow.jpg">黄色</option>
+	<option value="purple.png">紫</option>
+      </select>
+      <input type="text" id="canvas_pict" value="https://www.pakutaso.com/shared/img/thumb/texture524_13_TP_V.jpg">
+     <button onclick="draw('canvas_base','canvas_pict','sample3');">枠と写真を設定/文字のリセット</button>
+      
+    <p>
+      <input type="text" id="canvas_text" value="10">月
+      <input type="text" id="canvas_text1" value="10">日
+      <select id="canvas_text3">
+	<option value=""></option>
+	<option value="(月)">月</option>
+	<option value="(火)">火</option>
+	<option value="(水)">水</option>
+	<option value="(木)">木</option>
+	<option value="(金)">金</option>
+	<option value="(土)">土</option>
+	<option value="(日)">日</option>
+      </select>
+      <input type="text" id="canvas_text2" value="3">名当選<br>
+      商品名：<input type="text" id="canvas_text4" value="イオン美顔器">
+      文字間隔：<select id="canvas_space1">
+	<option value="0">デフォルト文字間隔</option>
+	<option value="-20">ちょっと狭い</option>
+	<option value="-35">かなり狭い</option>
+      </select>
+      <br>
+      条件：<input type="text" id="canvas_text5" list="jouken" autocomplete="off">
+      <datalist id="jouken" value="フォロー＆いいね">
+	<option value="フォロー＆いいね">
+  　	<option value="フォロー＆いいね＆コメント">
+  　	<option value="南斗水鳥拳">
+      </datalist>
+      <br>説明文<br>
+      <input type="text" id="canvas_text6" value="ーーーーーー">
+      <input type="text" id="canvas_text7" value="ーーーーーー">
+      <input type="text" id="canvas_text8" value="ーーーー">三行に分けて説明を書く
+      <select id="canvas_space2">
+	<option value="0">デフォルト文字間隔</option>
+	<option value="-10">ちょっと狭い</option>
+	<option value="-25">かなり狭い</option>
+     </select>
+<br><br>
+      <button onclick="drawText('sample', 'canvas_text','canvas_text1','canvas_text2','canvas_text3','canvas_text4','canvas_text5','canvas_text6','canvas_text7','canvas_text8','canvas_space1','canvas_space2');">文字を描く</button>
+      <br><br>
+<!--クロスドメイン規約に抵触するらしいので下ボタンはこの環境では使えない。（右クリックで縮小保存はできる）<br>
+      <button onclick="chgImg();">画像に変換して保存する</button>(1000*1000のpngに変換されます)<br>-->
+    </p>
+    <canvas id="sample3" width="1080" height="1080pt"></canvas>
+    <div><img crossOrigin="anonymous" id="newImg"></div>
+    <style>
+      #sample{
+      width:2160px;
+      height:2160px;
+      background-color:gray;
+      }
+
+    </style>
+   </div>
+
 
  <script type="text/javascript">
    var pict_base;
    var pict_url;
 
-   	function draw(base,pict){
-                const canvas = document.getElementById('sample');
+   	function draw(base,pict,canvas_id){
+                const canvas = document.getElementById(canvas_id);
 		const ctxbase = canvas.getContext("2d");
 	    	pict_base = document.getElementById(base);
 	    	pict_url = document.getElementById(pict);

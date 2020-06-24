@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Tool for getIF@L</title>
+<script type="text/javascript" src="readhtm.js"></script>
+<script>
+
+fetch('https://www.instagram.com/p/B-M0EGKgOhi/')
+  .then(response => response.text())
+  .then(text => {
+
+      	    // jsonだけ抜きだす                                                                                  
+            json_string = text.split("window._sharedData =")[1];
+            json = json_string.split("}\;\</script\>")[0] + "}";
+            //jsonデータを解析                                                                                   
+            adata = JSON.parse(json);
+
+    console.log(adata);
+  });  
+
+</script>
+
+</head>
+
+<body>
+
+
+
+
+</body>
+</html>
